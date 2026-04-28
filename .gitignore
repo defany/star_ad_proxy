@@ -10,5 +10,7 @@ tmp
 /config/*
 !/config/example.jsonc
 
+docker-compose.override.yaml
+
 *.log
 .DS_Store
