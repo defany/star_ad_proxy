@@ -1,0 +1,17 @@
+{
+  "env": "dev",
+  "http": {
+    "addr": ":8080"
+  },
+  "dragonfly": {
+    "addr": "localhost:6379",
+    "password": "",
+    "db": 99
+  },
+  "admin": {
+    "token": "change-me-locally"
+  },
+  "forwarder": {
+    "timeout": "8s"
+  }
+}

@@ -1,0 +1,34 @@
+version: '3'
+silent: true
+
+env:
+  CONFIG_PATH: config/local.json
+
+dotenv:
+  - .env
+
+tasks:
+  prod:
+    desc: "Run app in prod mode"
+    cmds:
+      - docker compose -f docker-compose.prod.yaml up -d --build
+
+  dev:
+    desc: "Run app with hot-reload"
+#    deps:
+#      - dev:infra
+    cmds:
+      - air -c .air.toml
+
+  dev:infra:
+    desc: "Run dev infrastructure (Dragonfly)"
+    status:
+      - docker compose -f docker-compose.dev.yaml ps --services --filter status=running | grep -q dragonfly
+    cmds:
+      - echo "Starting dev infrastructure…"
+      - docker compose -f docker-compose.dev.yaml up -d
+
+  lint:
+    desc: "Run golangci-lint"
+    cmds:
+      - golangci-lint run ./...

@@ -1,0 +1,30 @@
+services:
+  dragonfly:
+    image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.31.2
+    volumes:
+      - dragonfly-data:/data
+    command:
+      - "--dir=/data"
+      - "--dbfilename=dump"
+      - "--snapshot_cron=0 */3 * * *"
+      - "--requirepass=${DRAGONFLY_PASSWORD:?DRAGONFLY_PASSWORD must be set in .env}"
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    env_file:
+      - .env
+    environment:
+      DRAGONFLY_ADDR: dragonfly:6379
+      DRAGONFLY_PASSWORD: "${DRAGONFLY_PASSWORD:?DRAGONFLY_PASSWORD must be set in .env}"
+      DRAGONFLY_DB: "0"
+    ports:
+      - "${HTTP_PORT:-8080}:8080"
+    depends_on:
+      - dragonfly
+    restart: unless-stopped
+
+volumes:
+  dragonfly-data:

@@ -1,0 +1,14 @@
+.task
+tmp
+.idea
+.vscode
+
+.env
+.env.stage
+!.env.example
+
+/config/*
+!/config/example.jsonc
+
+*.log
+.DS_Store

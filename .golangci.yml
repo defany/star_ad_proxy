@@ -1,0 +1,119 @@
+version: "2"
+
+run:
+  timeout: 5m
+  relative-path-mode: gomod
+  issues-exit-code: 1
+  tests: true
+  modules-download-mode: readonly
+
+output:
+  formats:
+    text:
+      print-linter-name: true
+      print-issued-lines: true
+      colors: true
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  uniq-by-line: true
+
+linters:
+  default: standard
+  enable:
+    - dupl
+    - errcheck
+    - gocritic
+    - revive
+    - ineffassign
+    - unparam
+    - asciicheck
+    - unused
+    - errname
+    - forbidigo
+    - cyclop
+    - errorlint
+    - bodyclose
+    - depguard
+    - gosec
+    - govet
+    - contextcheck
+    - staticcheck
+    - wrapcheck
+  disable:
+    - gocyclo
+    - containedctx
+    - lll
+
+  exclusions:
+    generated: strict
+
+    rules:
+      - path: _test\.go
+        linters:
+          - cyclop
+          - dupl
+          - gosec
+      - path: internal/app/di/
+        linters:
+          - dupl
+
+  settings:
+    staticcheck:
+      checks:
+        - "-S1016"
+
+    gocritic:
+      disabled-checks:
+        - commentFormatting
+
+    wrapcheck:
+      ignore-sigs:
+        - "github.com/defany/goblin/errfmt.WithSource("
+      ignore-package-globs:
+        - "**/mock/**"
+        - "**/mocks/**"
+      extra-ignore-sigs: []
+      ignore-sig-regexps: []
+      ignore-interface-regexps: []
+      report-internal-errors: false
+
+    gosec:
+      excludes:
+        - G115
+      config:
+        global:
+          audit: true
+          show-ignored: true
+        severity: "medium"
+        confidence: "medium"
+
+    cyclop:
+      max-complexity: 20
+
+    depguard:
+      rules:
+        main:
+          deny:
+            - pkg: io/ioutil
+              desc: "io/ioutil is deprecated; use os/io"
+
+    revive:
+      severity: warning
+      rules:
+        - name: function-result-limit
+          arguments: [3]
+        - name: argument-limit
+          arguments: [4]
+
+    forbidigo:
+      exclude-godoc-examples: true
+      analyze-types: true
+      forbid:
+        - pattern: '^(fmt|log)\.Print.*$'
+          msg: "Use structured logger instead of (fmt|log).Print*"
+        - pattern: '^time\.Sleep$'
+          msg: "Don't use time.Sleep in production code (use timers/context)"
+        - pattern: '^http\.DefaultClient$'
+          msg: "Don't use http.DefaultClient (no timeouts); use fiber/v3/client"
