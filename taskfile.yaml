@@ -11,7 +11,7 @@ tasks:
   prod:
     desc: "Run app in prod mode"
     cmds:
-      - docker compose -f docker-compose.prod.yaml up app -d --build
+      - docker compose -f docker-compose.prod.yaml up -d --build
 
   dev:
     desc: "Run app with hot-reload"
