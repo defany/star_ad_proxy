@@ -1,6 +1,6 @@
 # 🛰️ star_ad_proxy
 
-Tiny webhook proxy for [Subgram](https://api.subgram.org). Subgram allows **only one webhook URL per account**, but a single account can host multiple bots with their own `bot_id` and `Api-Key`. This proxy takes the firehose, splits each batch by `bot_id`, and forwards every per-bot group to its own target — with that bot's own key stamped on the request.
+Tiny webhook proxy for [Subgram](https://api.subgram.org/api-docs). Subgram allows **only one webhook URL per account**, but a single account can host multiple bots with their own `bot_id` and `Api-Key`. This proxy takes the firehose, splits each batch by `bot_id`, and forwards every per-bot group to its own target — with that bot's own key stamped on the request.
 
 ```
 subgram → POST /webhook/subgram → [split by bot_id] → bot A target
