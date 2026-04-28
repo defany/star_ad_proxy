@@ -1,4 +1,5 @@
 {
+  // "dev" → http for derived URLs in clients; anything else → https
   "env": "dev",
   "http": {
     "addr": ":8080"
@@ -6,12 +7,15 @@
   "dragonfly": {
     "addr": "localhost:6379",
     "password": "",
-    "db": 99
+    // separate Dragonfly logical DB to keep proxy keys isolated
+    "db": 0
   },
   "admin": {
-    "token": "change-me-locally"
+    // shared secret for POST/GET/DELETE /register — Bearer token
+    "token": "change-me"
   },
   "forwarder": {
+    // per-request HTTP timeout when forwarding a sub-batch to a target
     "timeout": "8s"
   }
 }
